@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CFriendItem</class>
- <widget class="QWidget" name="CFriendItem">
+ <class>CChatGroupItem</class>
+ <widget class="QWidget" name="CChatGroupItem">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -28,8 +28,8 @@
   <widget class="QLabel" name="lb_icon">
    <property name="geometry">
     <rect>
-     <x>11</x>
-     <y>11</y>
+     <x>20</x>
+     <y>20</y>
      <width>40</width>
      <height>40</height>
     </rect>
@@ -47,7 +47,10 @@
     </size>
    </property>
    <property name="text">
-    <string>icon</string>
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../colin3stage_os/Qt_FeiQAndImmCode/IM/images/qq151217-02.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -56,27 +59,64 @@
   <widget class="QLabel" name="lb_name">
    <property name="geometry">
     <rect>
-     <x>58</x>
-     <y>11</y>
-     <width>171</width>
+     <x>73</x>
+     <y>20</y>
+     <width>191</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>191</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>191</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_groupId">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>50</y>
+     <width>201</width>
      <height>16</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>201</width>
+     <height>16</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>201</width>
+     <height>16</height>
+    </size>
+   </property>
    <property name="text">
-    <string>name</string>
+    <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_signed">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>30</y>
-     <width>331</width>
-     <height>31</height>
+     <x>280</x>
+     <y>20</y>
+     <width>81</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>signed</string>
+    <string>群</string>
    </property>
   </widget>
  </widget>

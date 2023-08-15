@@ -5,6 +5,7 @@
 #include <QImage>
 #include "chatdialog.h"
 #include <QMouseEvent>
+#include "pakdef.h"
 
 namespace Ui {
 class CFriendItem;
@@ -19,6 +20,7 @@ public:
     ~CFriendItem();
     void updateInfo(int status, int id=0,QString name="",int iconId=0,QString feeling="");
     void updataStatus(int status);
+    void insertFileRows(FileInfo* fileInfo);
     void mouseDoubleClickEvent(QMouseEvent* event) override;  //重写鼠标双击事件
 private:
     Ui::CFriendItem *ui;

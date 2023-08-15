@@ -6,6 +6,7 @@ CFriendItem::CFriendItem(QWidget *parent) :
     ui(new Ui::CFriendItem)
 {
     ui->setupUi(this);
+    this->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
 }
 
@@ -47,6 +48,12 @@ void CFriendItem::updateInfo(int status, int id, QString name, int iconId, QStri
 void CFriendItem::updataStatus(int status)
 {
     this->status = status;   //更新状态
+}
+
+//添加文件信息
+void CFriendItem::insertFileRows(FileInfo *fileInfo)
+{
+    return;  //该函数未用到
 }
 
 

@@ -21,6 +21,59 @@ void chatDialog::setId(int id,QString name)
     this->name = name;
 }
 
+void chatDialog::insertFileRows(FileInfo *fileInfo)
+{
+    int rows = ui->tb_fileInfo->rowCount();   //获取控件当前行数
+    ui->tb_fileInfo->setRowCount(rows+1);     //设置行数加1
+    //2:设置这一行的每一列控件（添加对象）
+    MyTableWidgetItem *item0 = new MyTableWidgetItem;
+    item0->setInfo(fileInfo);
+    item0->setText(fileInfo->filePath);
+    ui->tb_fileInfo->setItem(rows,0,item0);
+
+    QTableWidgetItem* item1 = new QTableWidgetItem;
+    if(fileInfo->userId == id)
+    {
+        //文件信息发送id 和窗口id相同 ，所以本地用户是接收方
+        item1->setText("下载");
+    }
+    else
+    {
+        item1->setText("上传");
+    }
+    ui->tb_fileInfo->setItem(rows,1,item1);
+
+    //进度条
+    QProgressBar* progress = new QProgressBar;
+    progress->setMaximum(fileInfo->size);
+    progress->setValue(fileInfo->cutNow * fileInfo->cutSize);
+    ui->tb_fileInfo->setCellWidget(rows, 2, progress);
+
+    //打开文件按钮
+    QPushButton* button = new QPushButton;
+    ui->tb_fileInfo->setCellWidget(rows,3,button);
+
+
+}
+
+void chatDialog::updateProcess(FileInfo *fileInfo)
+{
+    //首先找到这一行控件
+    int rows = ui->tb_fileInfo->rowCount();   //获取控件当前行数
+    for(int i=0;i<=rows;i++)
+    {
+        MyTableWidgetItem* item =(MyTableWidgetItem*)ui->tb_fileInfo->item(i,0);
+        if(item->userId==fileInfo->userId && item->timestamp==fileInfo->timestamp)
+        {
+            //更新进度
+             QProgressBar* progress =  (QProgressBar*)ui->tb_fileInfo->cellWidget(i,2);
+             progress->setValue(fileInfo->cutNow*fileInfo->cutSize + fileInfo->nowSize);
+             break;
+        }
+    }
+
+}
+
 //发送消息函数
 void chatDialog::on_pb_send_clicked()
 {
@@ -60,4 +113,43 @@ void chatDialog::keyPressEvent(QKeyEvent *event)
     {
         on_pb_send_clicked();
     }
+}
+
+//文件传输按钮
+void chatDialog::on_pb_openFile_clicked()
+{
+    //点击 弹出文件选择对话框  选择路径
+    QString path = QFileDialog::getOpenFileName(this,"选择文件夹","./");
+    if(path.isEmpty())
+    {
+        //没有选择文件，则直接退出
+        qDebug()<<"your choose is null!";
+        return;
+    }
+
+    //将文件路径发送给kernel，然后由kernenl发送
+    Q_EMIT SIG_sendFile(id,path);
+}
+
+
+
+
+void chatDialog::on_tb_fileInfo_cellDoubleClicked(int row, int column)
+{
+    int rows = ui->tb_fileInfo->rowCount();   //获取控件当前行数
+    //判断文件当前的状态
+     MyTableWidgetItem* item =(MyTableWidgetItem*)ui->tb_fileInfo->item(row,0);  //我们只需要用到 row参数
+     if(item->pause == FILE_IS_STARTED)
+     {
+         QMessageBox::information(this,"提示","文件zheng'zai 传输中",QMessageBox::Ok);
+         return;
+     }
+     if(item->userId != id)
+     {
+         QMessageBox::information(this,"提示","您只能在别人再次请求的时候才能继续发送该文件",QMessageBox::Ok);
+         return;
+     }
+
+     //发送信号通知kernel，让kernel发出文件请求
+     Q_EMIT SIG_sendFileBlockRq(item->userId,item->timestamp);
 }
